@@ -1,0 +1,31 @@
+import React from "react";
+
+import { ApolloProvider } from "react-apollo";
+import { ApolloClient } from "apollo-client";
+import { HttpLink } from "apollo-link-http";
+import { InMemoryCache } from "apollo-cache-inmemory";
+import { BrowserRouter } from "react-router-dom";
+import { Route, Switch } from "react-router";
+import { createStore } from "redux";
+import { Provider as ReduxProvider } from "react-redux";
+
+import { About } from "./about";
+
+const apolloClient = new ApolloClient({
+  link: new HttpLink({
+    uri: "https://api.graphcms.com/simple/v1/swapi"
+  }),
+  cache: new InMemoryCache()
+});
+
+function App() {
+  return (
+    <ApolloProvider client={apolloClient}>
+      <div className="App">
+        <About />
+      </div>
+    </ApolloProvider>
+  );
+}
+
+export { App };
