@@ -10,11 +10,12 @@ import { createStore } from "redux";
 import { Provider as ReduxProvider } from "react-redux";
 
 import { About } from "./pages/about";
-import {ABOUT_PAGE, HISTORY, ROOT} from "./routes";
+import {ABOUT_PAGE, HISTORY, PERSON_DETAIL, ROOT} from "./routes";
 import {NotFound} from "./pages/notFound";
 import {Search} from "./pages/search";
 import {History} from "./pages/history";
 import NavBar from "./components/NavBar";
+import {PersonDetail} from "./pages/personDetail";
 
 const apolloClient = new ApolloClient({
   link: new HttpLink({
@@ -32,6 +33,8 @@ function App() {
               <Switch>
                   <Route path={ROOT} exact component={Search}/>
                   <Route path={HISTORY} exact component={History}/>
+                  <Route path={PERSON_DETAIL()} component={PersonDetail}/>
+
                   <Route path={ABOUT_PAGE} component={About}/>
                   <Route component={NotFound}/>
               </Switch>

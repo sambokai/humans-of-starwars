@@ -14,6 +14,7 @@ const NavBar = () => {
                     <Link to={HISTORY}>History</Link>
                 </li>
             </ul>
+            <hr/>
         </nav>
     )
 };
