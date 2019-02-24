@@ -1,5 +1,5 @@
 import React from 'react';
-import {PersonLink} from "../components/PersonLink";
+import PersonLink from "../components/PersonLink";
 
 export const Search = () => {
     return (
