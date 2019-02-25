@@ -1,6 +1,6 @@
 import gql from "graphql-tag";
-import {Person} from "../types/types";
 import {Query} from "react-apollo";
+import {SearchPersonsQuery, SearchPersonsQueryVariables} from "./__generated__/SearchPersonsQuery";
 
 const searchAllPersons = gql`query SearchPersonsQuery($queryString: String!) {
     allPersons(filter: {
@@ -9,21 +9,11 @@ const searchAllPersons = gql`query SearchPersonsQuery($queryString: String!) {
     }) {
         id
         name
-        homeworld {
-            name
-        }
     }
 }`;
 
-interface SearchAllPersonsResult {
-    allPersons: Array<Person>
-}
 
-interface SearchAllPersonsVariables {
-    queryString: string;
-}
-
-export class SearchAllPersonsQuery extends Query<SearchAllPersonsResult, SearchAllPersonsVariables> {
+export class SearchAllPersons extends Query<SearchPersonsQuery, SearchPersonsQueryVariables> {
     static defaultProps = {
         query: searchAllPersons
     }

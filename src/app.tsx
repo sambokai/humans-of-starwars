@@ -11,7 +11,7 @@ import { Provider as ReduxProvider } from "react-redux";
 
 import { About } from "./pages/about";
 import {ABOUT_PAGE, HISTORY, PERSON_DETAIL, ROOT} from "./routes";
-import {NotFound} from "./pages/notFound";
+import {NotFound} from "./components/NotFound";
 import {Search} from "./pages/search";
 import {History} from "./pages/history";
 import NavBar from "./components/NavBar";

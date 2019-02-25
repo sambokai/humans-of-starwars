@@ -2,7 +2,7 @@ import React, {ChangeEvent, Component, FormEvent} from 'react';
 import PersonLink from "../components/PersonLink";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
-import {SearchAllPersonsQuery} from "../queries/searchAllPersons";
+import {SearchAllPersons} from "../queries/searchAllPersons";
 
 interface State {
     userInput: string;
@@ -34,7 +34,7 @@ export class Search extends Component<{}, State> {
                 </form>
 
                 {queryString && <ul>
-                    <SearchAllPersonsQuery variables={{queryString}}>
+                    <SearchAllPersons variables={{queryString}}>
                         {({loading, error, data}) => {
                             if (loading) return <Loading/>;
                             if (error || !data) return <Error/>;
@@ -45,7 +45,7 @@ export class Search extends Component<{}, State> {
                                 </li>
                             );
                         }}
-                    </SearchAllPersonsQuery>
+                    </SearchAllPersons>
                 </ul>}
             </section>
         )
