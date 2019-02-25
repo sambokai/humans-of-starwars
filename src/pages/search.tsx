@@ -1,36 +1,12 @@
 import React, {ChangeEvent, Component, FormEvent} from 'react';
 import PersonLink from "../components/PersonLink";
-
-import {ApolloConsumer} from "react-apollo";
-import gql from "graphql-tag";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
-import {Person} from "../types/types";
-import ApolloClient from "apollo-client/ApolloClient";
-
-
-interface SearchAllPersonsResult { allPersons: Array<Person> }
-interface SearchAllPersonsVariables {queryString: string;}
-
-const searchAllPersons = gql`query SearchPersonsQuery($queryString: String!) {
-    allPersons(filter: {
-        name_contains: $queryString
-        AND: {species_some: {name: "Human"}}
-    }) {
-        id
-        name
-        homeworld {
-            name
-        }
-    }
-}`;
-
+import {SearchAllPersonsQuery} from "../queries/searchAllPersons";
 
 interface State {
-    searchInput: string;
-    searchResults?: Array<Person>
-    loading: boolean;
-    error: boolean;
+    userInput: string;
+    queryString?: string;
 }
 
 export class Search extends Component<{}, State> {
@@ -38,63 +14,49 @@ export class Search extends Component<{}, State> {
         super(props);
 
         this.state = {
-            searchInput: '',
-            loading: false,
-            error: false,
+            userInput: '',
         }
     }
 
+    public render() {
+        const {queryString} = this.state;
 
-    render() {
-        const {searchResults, loading, error} = this.state;
         return (
             <section>
-                <ApolloConsumer>
-                    {(client) => (
-                        <form onSubmit={event => this.handleSubmit(event, client)}>
-                            <input type="text" placeholder="Skywalker" value={this.state.searchInput}
-                                   onChange={this.handleSearchInputChange}/>
+                <form onSubmit={this.handleSubmit}>
+                    <input
+                        type="text"
+                        placeholder="Skywalker"
+                        value={this.state.userInput}
+                        onChange={this.handleSearchInputChange}
+                    />
+                    <button type="submit">Search</button>
+                </form>
 
-                            <button type="submit">Search</button>
-                        </form>
-                    )}
-                </ApolloConsumer>
+                {queryString && <ul>
+                    <SearchAllPersonsQuery variables={{queryString}}>
+                        {({loading, error, data}) => {
+                            if (loading) return <Loading/>;
+                            if (error || !data) return <Error/>;
 
-
-                {loading && <Loading/>}
-                {error && <Error/>}
-
-                <ul>
-                    {searchResults && searchResults.map(({id, name}, key) =>
-                        <li key={key}>
-                            <PersonLink id={id} name={name}/>
-                        </li>
-                    )}
-                </ul>
+                            return data.allPersons.map(({id, name}) =>
+                                <li key={id}>
+                                    <PersonLink id={id} name={name}/>
+                                </li>
+                            );
+                        }}
+                    </SearchAllPersonsQuery>
+                </ul>}
             </section>
         )
     }
 
     private handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-        this.setState({searchInput: event.target.value})
+        this.setState({userInput: event.target.value})
     };
 
-    private async handleSubmit(event: FormEvent, client: ApolloClient<any>) {
+    private handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        this.setState({loading: true});
-
-        client.query<SearchAllPersonsResult, SearchAllPersonsVariables>({
-            query: searchAllPersons,
-            variables: {queryString: this.state.searchInput}
-        })
-            .then(({data}) => {
-                return this.setState({searchResults: data.allPersons});
-            })
-            .catch((error: any) => {
-                console.log(error);
-                return this.setState({error: true});
-            })
-            .finally(() => this.setState({loading: false}));
-
+        this.setState(prevState => ({queryString: prevState.userInput}));
     };
 }
