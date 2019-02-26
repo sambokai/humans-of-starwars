@@ -7,6 +7,7 @@ import {NotAHuman, NotFound} from "../components/NotFound";
 import PersonDataDisplay from "../components/PersonDataDisplay";
 import {connect, MapDispatchToProps} from "react-redux";
 import * as HistoryActions from "../store/history";
+import {CoStars} from "../components/CoStars";
 
 interface Params {
     id: string;
@@ -48,7 +49,9 @@ const PersonDetail: React.FunctionComponent<Props> = ({match, addVisitedPerson})
                         releaseDate: new Date(releaseDate)
                     })) : undefined}
                     homeworldName={homeworld ? homeworld.name : undefined}
-                />
+                >
+                    {<CoStars of={id} minConsecutive={2}/>}
+                </PersonDataDisplay>
             }}
         </GetPersonDetail>
     )

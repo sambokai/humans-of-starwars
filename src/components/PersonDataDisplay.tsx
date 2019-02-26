@@ -29,7 +29,7 @@ const getGenderString = (gender?: PERSON_GENDER) => {
     }
 };
 
-const PersonDataDisplay: React.FunctionComponent<Props> = ({name, gender, homeworldName, appearedInFilms}) => {
+const PersonDataDisplay: React.FunctionComponent<Props> = ({name, gender, homeworldName, appearedInFilms, children}) => {
 
 
     return (
@@ -40,8 +40,10 @@ const PersonDataDisplay: React.FunctionComponent<Props> = ({name, gender, homewo
 
             {appearedInFilms && <ul>
                 <p>Appeared in:</p>
-                {appearedInFilms.map(film => <li>{film.title} ({film.releaseDate.getFullYear()})</li>)}
+                {appearedInFilms.map((film, i) => <li key={i}>{film.title} ({film.releaseDate.getFullYear()})</li>)}
             </ul>}
+
+            {children}
 
         </article>
     )
