@@ -13,7 +13,7 @@ const getPersonDetail = gql`query GetPersonDetailQuery($id: ID!) {
         homeworld {
             name
         }
-        films(orderBy: episodeId_ASC) {
+        films(orderBy: releaseDate_ASC) {
             title
             releaseDate
         }
