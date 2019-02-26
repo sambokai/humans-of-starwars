@@ -5,14 +5,21 @@ import Loading from "../components/Loading";
 import Error from "../components/Error";
 import {NotAHuman, NotFound} from "../components/NotFound";
 import PersonDataDisplay from "../components/PersonDataDisplay";
+import {connect, MapDispatchToProps} from "react-redux";
+import * as HistoryActions from "../store/history";
 
 interface Params {
     id: string;
 }
 
-type Props = RouteComponentProps<Params>
 
-export const PersonDetail: React.FunctionComponent<Props> = ({match}) => {
+interface PropsFromDispatch {
+    addVisitedPerson: (id: string, name: string) => void
+}
+
+type Props = RouteComponentProps<Params> & PropsFromDispatch
+
+const PersonDetail: React.FunctionComponent<Props> = ({match, addVisitedPerson}) => {
     const {id} = match.params;
     return (
         <GetPersonDetail variables={{id}}>
@@ -30,6 +37,8 @@ export const PersonDetail: React.FunctionComponent<Props> = ({match}) => {
 
                 const {id, name, gender, homeworld, films} = Person;
 
+                addVisitedPerson(id, name);
+
                 return <PersonDataDisplay
                     id={id}
                     name={name}
@@ -44,3 +53,10 @@ export const PersonDetail: React.FunctionComponent<Props> = ({match}) => {
         </GetPersonDetail>
     )
 };
+
+
+const mapDispatchToProps: MapDispatchToProps<PropsFromDispatch, {}> = (dispatch) => ({
+    addVisitedPerson: (id, name) => dispatch(HistoryActions.addVisitedPerson(id, name)),
+});
+
+export default connect(null, mapDispatchToProps)(PersonDetail);
