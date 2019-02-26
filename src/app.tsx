@@ -14,8 +14,10 @@ import {NotFound} from "./components/NotFound";
 import {Search} from "./pages/Search";
 import History from "./pages/History";
 import NavBar from "./components/NavBar";
-import {store as reduxStore} from "./store";
+import {persistor, store as reduxStore} from "./store";
 import PersonDetail from "./pages/PersonDetail";
+import {PersistGate} from "redux-persist/integration/react";
+import Loading from "./components/Loading";
 
 const apolloClient = new ApolloClient({
   link: new HttpLink({
@@ -27,23 +29,25 @@ const apolloClient = new ApolloClient({
 function App() {
     return (
         <ReduxProvider store={reduxStore}>
-            <ApolloProvider client={apolloClient}>
-                <Router>
-                    <div className="App">
-                        <NavBar/>
-                        <Switch>
-                            <Route path={ROOT} exact component={Search}/>
-                            <Route path={HISTORY} exact component={History}/>
-                            <Route path={PERSON_DETAIL()} component={PersonDetail}/>
+            <PersistGate loading={<Loading/>} persistor={persistor}>
+                <ApolloProvider client={apolloClient}>
+                    <Router>
+                        <div className="App">
+                            <NavBar/>
+                            <Switch>
+                                <Route path={ROOT} exact component={Search}/>
+                                <Route path={HISTORY} exact component={History}/>
+                                <Route path={PERSON_DETAIL()} component={PersonDetail}/>
 
-                            <Route path={ABOUT_PAGE} component={About}/>
-                            <Route component={NotFound}/>
-                        </Switch>
-                    </div>
-                </Router>
-            </ApolloProvider>
+                                <Route path={ABOUT_PAGE} component={About}/>
+                                <Route component={NotFound}/>
+                            </Switch>
+                        </div>
+                    </Router>
+                </ApolloProvider>
+            </PersistGate>
         </ReduxProvider>
     );
 }
 
-export { App };
+export {App};
