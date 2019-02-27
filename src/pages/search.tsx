@@ -3,14 +3,20 @@ import PersonLink from "../components/PersonLink";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 import {SearchAllPersons} from "../queries/searchAllPersons";
+import {RouteComponentProps} from "react-router";
 
 interface State {
     userInput: string;
-    queryString?: string;
 }
 
-export class Search extends Component<{}, State> {
-    constructor(props: {}) {
+interface QueryParams {
+    q: string;
+}
+
+type Props = RouteComponentProps<QueryParams>
+
+export class Search extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.state = {
@@ -19,7 +25,8 @@ export class Search extends Component<{}, State> {
     }
 
     public render() {
-        const {queryString} = this.state;
+        const params = new URLSearchParams(this.props.location.search);
+        const queryString: string | null = params.get('q');
 
         return (
             <section>
@@ -57,6 +64,8 @@ export class Search extends Component<{}, State> {
 
     private handleSubmit = (event: FormEvent) => {
         event.preventDefault();
-        this.setState(prevState => ({queryString: prevState.userInput}));
+        const {userInput} = this.state;
+
+        this.props.history.push({search: userInput ? `?q=${userInput}` : undefined})
     };
 }
