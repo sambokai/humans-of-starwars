@@ -2,8 +2,10 @@
 
 exports[`CoStars component when given a list of characters should render correctly 1`] = `
 <ul>
-  <p>
-    Co-Stars:
+  <p
+    title="Characters who appeared in at least 2 consecutive Movies with this character."
+  >
+    Related Characters:
   </p>
   <li
     key="1"
