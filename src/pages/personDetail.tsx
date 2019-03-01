@@ -11,23 +11,34 @@ import {CoStars} from "../components/CoStars";
 import {filterByConsecutiveMovies, GetCoStars} from "../queries/getCoStars";
 import {GetCoStarQuery_allPersons} from "../queries/__generated__/GetCoStarQuery";
 
+const MIN_CONSECUTIVE = 2;
+
 interface Params {
     id: string;
 }
-
-interface OwnProps {
-    minConsecutive: number;
-}
-
 
 interface PropsFromDispatch {
     addVisitedPerson: (id: string, name: string) => void
 }
 
-type Props = OwnProps & RouteComponentProps<Params> & PropsFromDispatch
+type Props = RouteComponentProps<Params> & PropsFromDispatch
 
-const PersonDetail: React.FunctionComponent<Props> = ({match, addVisitedPerson, minConsecutive}) => {
+const PersonDetail: React.FunctionComponent<Props> = ({match, addVisitedPerson}) => {
     const {id} = match.params;
+
+    const coStars = <GetCoStars variables={{id}}>
+        {({loading, error, data}) => {
+            if (loading) return null;
+            if (error || !data || !data.Person || !data.Person.films) return <Error/>;
+
+            const appearedTogetherInMoreThanTwoMovies: GetCoStarQuery_allPersons[] = filterByConsecutiveMovies(data.Person.films, data.allPersons, MIN_CONSECUTIVE);
+
+            if (appearedTogetherInMoreThanTwoMovies.length === 0) return null;
+
+            return <CoStars stars={appearedTogetherInMoreThanTwoMovies}/>
+        }}
+    </GetCoStars>;
+
     return (
         <GetPersonDetail variables={{id}}>
             {({loading, error, data}) => {
@@ -56,24 +67,7 @@ const PersonDetail: React.FunctionComponent<Props> = ({match, addVisitedPerson, 
                     })) : undefined}
                     homeworldName={homeworld ? homeworld.name : undefined}
                 >
-                    <GetCoStars variables={{id}}>
-                        {({loading, error, data}) => {
-                            if (loading) return null;
-                            if (error || !data || !data.Person || !data.Person.films) return <Error/>;
-
-                            const appearedTogetherInMoreThanTwoMovies: GetCoStarQuery_allPersons[] = filterByConsecutiveMovies(data.Person.films, data.allPersons, minConsecutive);
-
-                            if (appearedTogetherInMoreThanTwoMovies.length === 0) return null;
-
-                            return (
-                                <ul>
-                                    <p>Co-Stars:</p>
-
-                                    <CoStars stars={appearedTogetherInMoreThanTwoMovies}/>
-                                </ul>
-                            )
-                        }}
-                    </GetCoStars>
+                    {coStars}
                 </PersonDataDisplay>
             }}
         </GetPersonDetail>
