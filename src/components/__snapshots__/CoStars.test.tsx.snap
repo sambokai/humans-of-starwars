@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CoStars component when given a list of characters should render correctly 1`] = `
+<ul>
+  <p>
+    Co-Stars:
+  </p>
+  <li
+    key="1"
+  >
+    <PersonLink
+      id="1"
+      name="Luke Skywalker"
+    />
+  </li>
+  <li
+    key="2"
+  >
+    <PersonLink
+      id="2"
+      name="Jango Fett"
+    />
+  </li>
+</ul>
+`;

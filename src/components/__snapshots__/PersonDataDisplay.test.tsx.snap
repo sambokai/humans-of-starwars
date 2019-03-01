@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PersonDataDisplay component should render correctly 1`] = `
+<article>
+  <h2>
+    Luke Skywalker
+  </h2>
+  <h4>
+     
+  </h4>
+</article>
+`;
+
+exports[`PersonDataDisplay component when given a gender should render correctly 1`] = `
+<article>
+  <h2>
+    Luke Skywalker
+  </h2>
+  <h4>
+    Male
+     
+  </h4>
+</article>
+`;
+
+exports[`PersonDataDisplay component when given a homeworld name should render correctly 1`] = `
+<article>
+  <h2>
+    Luke Skywalker
+  </h2>
+  <h4>
+     
+    from Tatooine
+  </h4>
+</article>
+`;
+
+exports[`PersonDataDisplay component when given a list of films should render correctly 1`] = `
+<article>
+  <h2>
+    Luke Skywalker
+  </h2>
+  <h4>
+     
+  </h4>
+  <ul>
+    <p>
+      Appeared in:
+    </p>
+    <li
+      key="0"
+    >
+      Movie A
+       (
+      2000
+      )
+    </li>
+    <li
+      key="1"
+    >
+      Movie B
+       (
+      2000
+      )
+    </li>
+  </ul>
+</article>
+`;
+
+exports[`PersonDataDisplay component when given both a homeworld and a gender should render correctly 1`] = `
+<article>
+  <h2>
+    Luke Skywalker
+  </h2>
+  <h4>
+    Male
+     
+    from MALE
+  </h4>
+</article>
+`;

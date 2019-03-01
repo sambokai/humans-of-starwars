@@ -7,7 +7,7 @@ import {
     GetCoStarQueryVariables
 } from "./__generated__/GetCoStarQuery";
 
-const getCoStars = gql`query GetCoStarQuery($id: ID!) {
+export const getCoStars = gql`query GetCoStarQuery($id: ID!) {
     allPersons(
         filter: {
             id_not: $id,

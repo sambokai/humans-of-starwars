@@ -1,11 +1,7 @@
 import React from "react";
-import Enzyme, { shallow } from "enzyme";
+import {shallow} from "enzyme";
 
-import Adapter from "enzyme-adapter-react-16";
-
-import { App } from "./app";
-
-Enzyme.configure({ adapter: new Adapter() });
+import {App} from "./app";
 
 describe("The main app component", () => {
   it("should include an ApolloProvider", () => {

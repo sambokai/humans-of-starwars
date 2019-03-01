@@ -1,35 +1,20 @@
 import React from 'react';
-import {filterByConsecutiveMovies, GetCoStars} from "../queries/getCoStars";
-import Error from "./Error";
 import PersonLink from "./PersonLink";
 
 interface OwnProps {
-    of: string;
-    minConsecutive: number;
+    stars: ReadonlyArray<{
+        id: string;
+        name: string;
+    }>
 }
 
-export const CoStars: React.FunctionComponent<OwnProps> = ({of, minConsecutive}) => {
+export const CoStars: React.FunctionComponent<OwnProps> = ({stars}) => {
 
-    return (
-            <GetCoStars variables={{id: of}}>
-                {({loading, error, data}) => {
-                    if (loading) return null;
-                    if (error || !data || !data.Person || !data.Person.films) return <Error/>;
+    if (!stars || stars.length === 0) return null;
 
-                    const appearedTogetherInMoreThanTwoMovies = filterByConsecutiveMovies(data.Person.films, data.allPersons, minConsecutive);
+    return <ul>
+        <p>Co-Stars:</p>
 
-                    if (appearedTogetherInMoreThanTwoMovies.length === 0) return null;
-
-                    return (
-                        <ul>
-                            <p>Co-Stars:</p>
-
-                            {appearedTogetherInMoreThanTwoMovies.map(({id, name}) => (
-                                    <li key={id}><PersonLink id={id} name={name}/></li>)
-                            )}
-                        </ul>
-                    )
-                }}
-            </GetCoStars>
-    )
+        {stars.map(({id, name}) => <li key={id}><PersonLink id={id} name={name}/></li>)}
+    </ul>
 };
