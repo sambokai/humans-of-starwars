@@ -2,7 +2,7 @@
 
 import {Reducer} from "redux";
 
-const ADD_VISITED_PERSON = '@@history/ADD_VISITED_PERSON';
+export const ADD_VISITED_PERSON = '@@history/ADD_VISITED_PERSON';
 
 
 // Action Creator
@@ -21,14 +21,14 @@ export interface VisitedPerson {
     name: string;
 }
 
-const initialState: HistoryState = {
+export const initialState: HistoryState = {
     visitedPersons: [],
 };
 
 
 // Reducer
 
-export const reducer: Reducer = (state = initialState, action) => {
+export const reducer: Reducer<HistoryState> = (state = initialState, action) => {
     switch (action.type) {
         case ADD_VISITED_PERSON:
             const distinct: VisitedPerson[] = [

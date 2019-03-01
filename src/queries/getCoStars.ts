@@ -47,13 +47,13 @@ export function filterByConsecutiveMovies(basePersonFilms: GetCoStarQuery_allPer
         if (!person.films) return false;
 
         const personEpisodeIds = person.films.map(film => film.episodeId);
-        const commonEpisodes = basePersonEpisodeIds.filter(episode => personEpisodeIds.includes(episode));
+        const commonEpisodeIds = basePersonEpisodeIds.filter(episode => personEpisodeIds.includes(episode));
 
-        return minConsecutiveSequence(minConsecutive, commonEpisodes);
+        return minConsecutiveSequence(minConsecutive, commonEpisodeIds);
     })
 }
 
-function minConsecutiveSequence(minConsecutive: number, numbers: number[]): boolean {
+export function minConsecutiveSequence(minConsecutive: number, numbers: number[]): boolean {
     const sequences = new Map();
     let longestSequence = 1;
 
